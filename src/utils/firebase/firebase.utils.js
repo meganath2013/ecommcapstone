@@ -2,7 +2,7 @@
 
 import { initializeApp } from "firebase/app";
 
-import {getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect} from 'firebase/auth'
+import {getAuth, GoogleAuthProvider,onAuthStateChanged, signInWithPopup, signInWithRedirect, createUserWithEmailAndPassword, sendPasswordResetEmail, signInWithEmailAndPassword, signOut} from 'firebase/auth'
 
 import {doc,getDoc,getFirestore, setDoc} from 'firebase/firestore'
 
@@ -37,15 +37,17 @@ export const auth = getAuth();
 export const signInWithGooglePopup = () => signInWithPopup(auth,GoogleProvider);
 export const signInwithGoogleRedirect = () => signInWithRedirect(auth,GoogleProvider);
 
+
+
 // DB process
 export const db =getFirestore();
 
-export const createUserDocumentFromAuth =async (user)=>{
+export const createUserDocumentFromAuth =async (user,additionalInfo={})=>{
+    if(!user) return;
 
     const userDocRef =doc(db,'users',user.uid);
     const userSnapSht =await getDoc(userDocRef);
-    console.log(userSnapSht)
-    console.log(userSnapSht.exists())
+
 
     if(!userSnapSht.exists())
     {
@@ -56,7 +58,8 @@ export const createUserDocumentFromAuth =async (user)=>{
             await setDoc(userDocRef,{
                 displayName,
                 email,
-                createdAt
+                createdAt,
+                ...additionalInfo
             });
 
         }catch(error){
@@ -65,4 +68,20 @@ export const createUserDocumentFromAuth =async (user)=>{
     }
 
     return userDocRef;
+}
+
+export const signOutUser = async () => await signOut(auth)
+
+export const createAuthUserwithEmailandPassword =async (email,password)=>{
+    if(!email || !password) return;
+    /*below is  library fn of firebase*/
+    return await createUserWithEmailAndPassword(auth,email,password);
+    }
+export const signInAuthWithEmailAndPassword =async (email,password)=>{
+        if(!email || !password) return;
+        /*below is  library fn of firebase*/
+        return await signInWithEmailAndPassword(auth,email,password);
+        }
+export const onAuthStateChangedListener =(callback) =>{
+onAuthStateChanged(auth, callback)
 }

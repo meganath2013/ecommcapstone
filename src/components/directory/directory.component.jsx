@@ -9,17 +9,13 @@ const Directory =({categories}) =>{
   {categories.map((category) =>{
 
    return(
-  <div key={category.id} className="category-container">
-        <CategoryItem category1={category}/>
-
-    </div>
-
-
+  
+        <CategoryItem key={category.id} category1={category}/>
     )
    }
     )}
 
-</div>
+</div>  
     )
 }
 export default Directory;
