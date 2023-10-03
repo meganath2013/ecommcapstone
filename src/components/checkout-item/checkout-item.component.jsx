@@ -4,7 +4,7 @@ import './checkout-item.styles.scss'
 
 const CheckoutItem= ({cartItem})=>{
 
-const {addItemToCart,RemoveItemToCart}=useContext(CartContext);
+const {addItemToCart,RemoveItemToCart,clearItemFromCart}=useContext(CartContext);
 const {name,price,quantity,imageUrl}=cartItem;
 
 return(
@@ -24,9 +24,9 @@ return(
         </div>
       </span>
       <span className='price'> {price}</span>
-     {/* <div className='remove-button' onClick={clearItemHandler}>
+     <div className='remove-button' onClick={()=>clearItemFromCart(cartItem)}>
         &#10005;
-      </div> */}
+      </div>
     </div>
     )
 
