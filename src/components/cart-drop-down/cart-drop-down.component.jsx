@@ -3,10 +3,13 @@ import './cart-drop-down.styles.scss'
 import { useContext } from "react";
 import { CartContext } from "../../contexts/cart.context";
 import CartItem from "../cart-item/cart-item.component";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const CartDropDown =()=>{
 
     const {cartItems}=useContext(CartContext);
+    const navigate=useNavigate();
+    const gotoCheckout=()=>navigate('/Checkout');
 
 return(
     <div className='cart-dropdown-container'>
@@ -16,7 +19,7 @@ return(
             :(<span className='empty-message'>Your cart is empty</span>)}
         </div>
         <div>
-            <Button>Go to Checkout</Button>
+            <Button onClick={gotoCheckout}>Go to Checkout</Button>
         </div>
 
     </div>)
