@@ -2,9 +2,15 @@
 
 import { initializeApp } from "firebase/app";
 
-import {getAuth, GoogleAuthProvider,onAuthStateChanged, signInWithPopup, signInWithRedirect, createUserWithEmailAndPassword, sendPasswordResetEmail, signInWithEmailAndPassword, signOut} from 'firebase/auth'
+import {getAuth, 
+    GoogleAuthProvider,
+    onAuthStateChanged, 
+    signInWithPopup,
+     signInWithRedirect, createUserWithEmailAndPassword, 
+     sendPasswordResetEmail, signInWithEmailAndPassword, signOut} from 'firebase/auth'
 
-import {doc,getDoc,getFirestore, setDoc} from 'firebase/firestore'
+import {doc,getDoc,getFirestore, 
+    setDoc, collection, writeBatch, query, getDocs} from 'firebase/firestore'
 
 // TODO: Add SDKs for Firebase products that you want to use
 
@@ -42,6 +48,32 @@ export const signInwithGoogleRedirect = () => signInWithRedirect(auth,GoogleProv
 // DB process
 export const db =getFirestore();
 
+// export const addCollection = async (collectionKey,objectsToAdd) =>  {
+//     const collectionRef = collection(db,collectionKey);
+//     const batch=writeBatch(db);
+//     objectsToAdd.forEach(object => {
+//         const docRef=doc(collectionRef,object.title.toLowerCase());
+//         batch.set(docRef,object);
+        
+//     });
+//     await batch.commit();
+// };
+
+export const getCollectionData = async ()=>{
+    const collectionRef= collection(db,'categories');
+    const q =query(collectionRef);
+    const querySnapShot=await getDocs(q);
+
+    const categoryMap=querySnapShot.docs.reduce((acc, dataShot)=>{
+        const {title, items}=dataShot.data();
+        console.log("title "+title+" items : "+dataShot.data());
+        acc[title.toLowerCase()]=items;
+        return acc;
+    },{})
+
+    return categoryMap;
+
+}
 export const createUserDocumentFromAuth =async (user,additionalInfo={})=>{
     if(!user) return;
 

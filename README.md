@@ -1,5 +1,9 @@
 # Getting Started with Create React App
 
+Used 2mega2023 for firebase
+
+netlify used the github meganath2013 login
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

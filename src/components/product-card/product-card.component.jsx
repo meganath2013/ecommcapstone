@@ -7,7 +7,6 @@ const ProductCard= ({product}) =>{
     const { addItemToCart} = useContext(CartContext);
     const addProductToCart = () =>
     {
-    console.log("context fired");
     return addItemToCart(product);
     }
     return(
