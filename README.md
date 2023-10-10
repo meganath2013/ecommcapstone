@@ -4,6 +4,9 @@ Used 2mega2023 for firebase
 
 netlify used the github meganath2013 login
 
+app login can be used with m****20232@gmail.com
+p*******3!
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

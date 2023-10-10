@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect, useReducer } from "react";
 import { onAuthStateChangedListener } from "../utils/firebase/firebase.utils";
 import { signOutUser } from "../utils/firebase/firebase.utils";
 import { createUserDocumentFromAuth } from "../utils/firebase/firebase.utils";
@@ -8,12 +8,42 @@ setCurrentUser:()=>null,
 currentUser:null,
 })
 
+export const USER_ACTIONS ={
+    SET_CURRENT_USER:'SET_CURRENT_USER',
+};
+
+export const INITIAL_STATE={
+    currentUser:null,
+};
+
+
+const userReducer=(state,action)=>{
+    const {type,payload}=action
+    switch(type)
+    {
+    case USER_ACTIONS.SET_CURRENT_USER:
+        return {
+            ...state,
+            currentUser:payload
+        };
+    default:
+        throw new Error (`Unhandled type ${type} exception occured in USERReducer`);
+    }
+}
+
+
 
 export const UserProvider =({children})=>{
-    const [currentUser,setCurrentUser] =useState(null);
+    // const [currentUser,setCurrentUser] =useState(null);
+    const [{currentUser},dispatch]=useReducer(userReducer,INITIAL_STATE);
+
+    const setCurrentUser=(user)=>{
+        dispatch({type: USER_ACTIONS.SET_CURRENT_USER ,currentUser:user});
+    }
+
     const value={
-    currentUser,setCurrentUser
-    };
+        currentUser,setCurrentUser
+        };
   
 
     useEffect(()=>{
@@ -25,7 +55,10 @@ export const UserProvider =({children})=>{
             console.log('useeffect')
             console.log(user)
         });
-    return unsubscribe;},[])
+    return unsubscribe;
+},[])
+
+
 
     return <UserContext.Provider value={value}>{children}</UserContext.Provider>
 
